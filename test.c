@@ -1,19 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 #define DEVICE "/dev/pen0"
 
 
 int main() {
     int i,fd;
-    char ch, write_buf[100] = "bobby",read_buf[100];
-
-    ;
+    char ch, write_buf[200] = "kernelbois", read_buf[200];
 
     if((fd = open(DEVICE,O_RDWR)) == -1)
     {
-        printf("file %s does not exist\n",DEVICE);
+        printf("file %s does not exist\n", DEVICE);
 	return -1;
     }
 
@@ -25,7 +24,7 @@ int main() {
         case 'w':
             printf("enter data: ");
             fflush(stdin);
-            //scanf("%s",write_buf);
+            scanf("%s",write_buf);
             write(fd,write_buf,sizeof(write_buf));
             break;
         case 'r':
