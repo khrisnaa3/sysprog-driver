@@ -1,6 +1,8 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/usb.h>
+#include <linux/uaccess.h>
+#include <linux/unistd.h>
 
 #define MIN(a,b) (((a) <= (b)) ? (a) : (b))
 #define BULK_EP_OUT 0x01
