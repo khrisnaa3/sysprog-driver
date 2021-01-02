@@ -12,6 +12,28 @@ static void pen_disconnect(struct usb_interface *interface)
 {
     printk(KERN_INFO "Kernel Bois Pen drive removed\n");
 }
+
+static ssize_t pen_read(struct file *f, char __user *buf, size_t cnt, loff_t *off)
+{
+    int retval;
+    int read_cnt;
+    
+    /* Read the data from the bulk endpoint */
+    retval = usb_bulk_msg(device, usb_rcvbulkpipe(device, BULK_EP_IN),
+            bulk_buf, MAX_PKT_SIZE, &read_cnt, 5000);
+
+    if (retval)
+    {
+        printk(KERN_ERR "Bulk message returned %d\n", retval);
+        return retval;
+    }
+    if (copy_to_user(buf, bulk_buf, MIN(cnt, read_cnt)))
+    {
+        return -EFAULT;
+    }
+ 
+    return MIN(cnt, read_cnt);
+}
  
 static struct usb_device_id pen_table[] =
 {
